@@ -7,7 +7,7 @@
 - 🔹 **Easy API Calls**: Simplifies GET, POST, PUT, and DELETE requests.
 - 🔹 **Authentication Support**: Includes token-based authentication.
 - 🔹 **Error Handling**: Automatically catches and logs API errors.
-- 🔹 **Customizable**: Supports middleware and request modifications.
+
 
 ## Installation
 ```sh
@@ -72,8 +72,8 @@ Check out the **Admin Dashboard Project** demonstrating this library in action! 
 - **Tailwind Styled UI**
 - **API Integration with Laravel Backend**
 
-🔗 [Live Demo](https://your-live-demo-link.com)  
-📂 [Source Code]((https://github.com/okoloemeka37/next-laravel-apihelper))
+🔗 [Live Demo](https://admin-dashboard-project-w4rw.onrender.com)  
+📂 [Source Code](Frontend:(https://github.com/okoloemeka37/Admin-Dashboard-Project)Backend:(https://github.com/okoloemeka37/laravel-backend-for-Admin-Dashboard-Project))
 
 ## Contributing
 We welcome contributions! Feel free to fork this repository, submit issues, or create pull requests.
