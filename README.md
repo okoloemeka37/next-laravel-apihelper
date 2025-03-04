@@ -56,7 +56,7 @@ async function createUser() {
 ```
 
 ## Authentication
-it dynamically authenticate users using 'authToken' from localhost
+it dynamically authenticate users using 'authToken' from localStorage
 
 ## Error Handling
 Errors are automatically handled, but you can also customize error messages:
@@ -70,7 +70,7 @@ api.setErrorHandler((error) => {
 Check out the **Admin Dashboard Project** demonstrating this library in action! It features:
 - **User Management** (Add, Edit, Delete Users)
 - **Tailwind Styled UI**
-- **API Integration with Laravel Backend**
+- **NEXT.JS API Integration with Laravel Backend**
 
 🔗 [Live Demo](https://admin-dashboard-project-w4rw.onrender.com)  
 📂 [Source Code](Frontend:(https://github.com/okoloemeka37/Admin-Dashboard-Project)Backend:(https://github.com/okoloemeka37/laravel-backend-for-Admin-Dashboard-Project))
