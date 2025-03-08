@@ -14,17 +14,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.api = void 0;
 const apiClient_1 = __importDefault(require("./apiClient"));
+let errorHandler = (error) => {
+    var _a;
+    console.error("API Error:", ((_a = error.response) === null || _a === void 0 ? void 0 : _a.data) || error.message);
+};
 exports.api = {
-    'get': (url, params) => __awaiter(void 0, void 0, void 0, function* () {
-        return apiClient_1.default.get(url, { params }).then((res) => res.data);
+    get: (url, params) => __awaiter(void 0, void 0, void 0, function* () {
+        return apiClient_1.default.get(url, { params }).then((res) => res.data).catch(errorHandler);
     }),
-    'post': (url, data) => __awaiter(void 0, void 0, void 0, function* () {
-        return apiClient_1.default.post(url, data).then((res) => res.data);
+    post: (url, data) => __awaiter(void 0, void 0, void 0, function* () {
+        return apiClient_1.default.post(url, data).then((res) => res.data).catch(errorHandler);
     }),
-    'put': (url, data) => __awaiter(void 0, void 0, void 0, function* () {
-        return apiClient_1.default.put(url, data).then((res) => res.data);
+    put: (url, data) => __awaiter(void 0, void 0, void 0, function* () {
+        return apiClient_1.default.put(url, data).then((res) => res.data).catch(errorHandler);
     }),
-    'delete': (url) => __awaiter(void 0, void 0, void 0, function* () {
-        return apiClient_1.default.delete(url).then((res) => res.data);
-    })
+    delete: (url) => __awaiter(void 0, void 0, void 0, function* () {
+        return apiClient_1.default.delete(url).then((res) => res.data).catch(errorHandler);
+    }),
+    setErrorHandler: (handler) => {
+        errorHandler = handler;
+    }
 };

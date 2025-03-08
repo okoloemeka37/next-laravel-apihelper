@@ -97,12 +97,13 @@ Check out the **Admin Dashboard Project** demonstrating this library in action! 
 - **Tailwind Styled UI**
 - **API Integration with Laravel Backend**
 
-🔗 [Live Demo](https://your-live-demo-link.com)  
-📂 [Source Code](https://github.com/your-repo/admin-dashboard)
+🔗 [Live Demo](https://admin-dashboard-project-w4rw.onrender.com)  
+📂 [FrontEnd Source Code](https://github.com/okoloemeka37/Admin-Dashboard-Project)
+📂 [FrontEnd Source Code](https://github.com/okoloemeka37/laravel-backend-for-Admin-Dashboard-Project)     
 
 ## Contributing
 We welcome contributions! Feel free to fork this repository, submit issues, or create pull requests.
 
 ## License
-MIT License. See `LICENSE` file for details.
+ISC License.
 

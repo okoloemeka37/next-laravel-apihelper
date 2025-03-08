@@ -12,8 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.setAuthToken = void 0;
 const axios_1 = __importDefault(require("axios"));
-const Api_Base_Url = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api";
+const Api_Base_Url = process.env.NEXT_PUBLIC_API_BASE_URL || process.env.REACT_APP_API_BASE_URL || "http://localhost:8000/api";
 const apiClient = axios_1.default.create({
     baseURL: Api_Base_Url,
     headers: {
@@ -22,15 +23,39 @@ const apiClient = axios_1.default.create({
     },
     timeout: 10000
 });
-//Add Authorization token authomaticaly
+// Variable to store manually set token
+let authToken = null;
+// Function to manually set the token
+const setAuthToken = (token) => {
+    authToken = token; // Store in variable
+    if (typeof window !== "undefined") {
+        localStorage.setItem("authToken", token); // Store in localStorage
+    }
+};
+exports.setAuthToken = setAuthToken;
+//middleware handle response
+apiClient.interceptors.response.use((response) => {
+    console.log("Response Received:", response);
+    return response;
+}, (error) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
+    console.error("API Error:", ((_a = error.response) === null || _a === void 0 ? void 0 : _a.data) || error.message);
+    // retry logic after 500 error(server error)
+    if (error.response && ((_b = error.response) === null || _b === void 0 ? void 0 : _b.status) >= 500) {
+        console.warn("Retrying request...");
+        return apiClient.request(error.config);
+    }
+    return Promise.reject(error);
+}));
+// Middleware: Set Authentication Token
 apiClient.interceptors.request.use((config) => {
     const token = typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
+    console.log("Request Sent:", config);
     return config;
 });
-//handle errors
 // Custom error handling
 const handleApiError = (error) => {
     if (error.response) {
@@ -45,7 +70,7 @@ const handleApiError = (error) => {
             console.error("Not Found: The requested resource does not exist.");
         }
         else if (status >= 500) {
-            console.error("Server Error: API is down.");
+            console.error("Server Error");
         }
         else {
             console.error("API Error:", error.response.data);
