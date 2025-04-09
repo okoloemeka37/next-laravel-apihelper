@@ -20,15 +20,44 @@ let errorHandler = (error) => {
 };
 exports.api = {
     get: (url, params) => __awaiter(void 0, void 0, void 0, function* () {
-        return apiClient_1.default.get(url, { params }).then((res) => res.data).catch(errorHandler);
+        try {
+            const res = yield apiClient_1.default.get(url, params);
+            return res.data;
+        }
+        catch (error) {
+            errorHandler(error);
+            throw error;
+        }
     }),
     post: (url, data) => __awaiter(void 0, void 0, void 0, function* () {
-        return apiClient_1.default.post(url, data).then((res) => res.data).catch(errorHandler);
+        try {
+            const res = yield apiClient_1.default.post(url, data);
+            return res.data;
+        }
+        catch (error) {
+            errorHandler(error);
+            throw error;
+        }
     }),
     put: (url, data) => __awaiter(void 0, void 0, void 0, function* () {
-        return apiClient_1.default.put(url, data).then((res) => res.data).catch(errorHandler);
+        try {
+            const res = yield apiClient_1.default.put(url, data);
+            return res.data;
+        }
+        catch (error) {
+            errorHandler(error);
+            throw error;
+        }
     }),
     delete: (url) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const res = yield apiClient_1.default.delete(url);
+            return res.data;
+        }
+        catch (error) {
+            errorHandler(error);
+            throw error;
+        }
         return apiClient_1.default.delete(url).then((res) => res.data).catch(errorHandler);
     }),
     setErrorHandler: (handler) => {

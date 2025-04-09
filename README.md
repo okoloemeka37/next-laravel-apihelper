@@ -78,8 +78,16 @@ async function loginUser(email: string, password: string) {
 
 ### 📌 Storing Authentication Token
 To authenticate requests, include the token in the request headers:
+## Authentication Storage
+
+Choose where you want the token to be stored:
+
+- `localStorage` (default) → Persistent even after browser is closed.
+- `sessionStorage` → Clears when browser tab or window is closed.
+- `cookie` → Stored in cookies.
+Set storage type (localStorage, sessionStorage, or cookie)
 ```ts
-api.setAuthToken("your-access-token");
+api.setAuthToken("your-access-token","storagetype");
 ```
 This works alongside the automatic retrieval of the token from `localStorage`.
 
@@ -99,7 +107,7 @@ Check out the **Admin Dashboard Project** demonstrating this library in action! 
 
 🔗 [Live Demo](https://admin-dashboard-project-w4rw.onrender.com)  
 📂 [FrontEnd Source Code](https://github.com/okoloemeka37/Admin-Dashboard-Project)
-📂 [FrontEnd Source Code](https://github.com/okoloemeka37/laravel-backend-for-Admin-Dashboard-Project)     
+📂 [BackEnd Source Code](https://github.com/okoloemeka37/laravel-backend-for-Admin-Dashboard-Project)     
 
 ## Contributing
 We welcome contributions! Feel free to fork this repository, submit issues, or create pull requests.

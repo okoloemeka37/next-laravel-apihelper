@@ -26,10 +26,18 @@ const apiClient = axios_1.default.create({
 // Variable to store manually set token
 let authToken = null;
 // Function to manually set the token
-const setAuthToken = (token) => {
+const setAuthToken = (token, storageType) => {
     authToken = token; // Store in variable
-    if (typeof window !== "undefined") {
-        localStorage.setItem("authToken", token); // Store in localStorage
+    if (storageType === "session") {
+        sessionStorage.setItem("authToken", token); // Store in sessionStorage  
+    }
+    else if (storageType === "cookie") {
+        document.cookie = `authToken=${token}; path=/;`; // Store in cookies
+    }
+    else if (storageType === "local") {
+        if (typeof window !== "undefined") {
+            localStorage.setItem("authToken", token); // Store in localStorage
+        }
     }
 };
 exports.setAuthToken = setAuthToken;
@@ -47,15 +55,6 @@ apiClient.interceptors.response.use((response) => {
     }
     return Promise.reject(error);
 }));
-// Middleware: Set Authentication Token
-apiClient.interceptors.request.use((config) => {
-    const token = typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    console.log("Request Sent:", config);
-    return config;
-});
 // Custom error handling
 const handleApiError = (error) => {
     if (error.response) {

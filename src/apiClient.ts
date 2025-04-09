@@ -16,11 +16,19 @@ timeout:10000
 let authToken: string | null = null;
 
 // Function to manually set the token
-export const setAuthToken = (token: string) => {
+export const setAuthToken = (token: string,storageType:string) => {
   authToken = token; // Store in variable
+  if (storageType === "session") {
+    sessionStorage.setItem("authToken", token); // Store in sessionStorage  
+  }else if (storageType === "cookie") {
+    document.cookie = `authToken=${token}; path=/;`; // Store in cookies
+}else if (storageType === "local") {
   if (typeof window !== "undefined") {
     localStorage.setItem("authToken", token); // Store in localStorage
   }
+
+}
+ 
 };
 
 //middleware handle response
@@ -41,16 +49,7 @@ apiClient.interceptors.response.use(
   }
 )
 
-// Middleware: Set Authentication Token
 
-apiClient.interceptors.request.use((config)=>{
-    const token=typeof window !=="undefined"? localStorage.getItem("authToken"):null
-    if(token){
-        config.headers.Authorization= `Bearer ${token}`
-    }
-    console.log("Request Sent:", config);
-    return config;
-})
 
 // Custom error handling
 const handleApiError = (error: any) => {

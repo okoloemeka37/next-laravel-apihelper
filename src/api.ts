@@ -6,15 +6,43 @@ let errorHandler: (error: any) => void = (error) => {
 
 export const api = {
   get: async (url: string, params?: any) => {
-    return apiClient.get(url, { params }).then((res) => res.data).catch(errorHandler);
+    try{
+      const res = await apiClient.get(url,params );
+      return res.data;
+    }catch(error){
+      errorHandler(error);
+      throw error
+    }
+  
   },
   post: async (url: string, data?: any) => {
-    return apiClient.post(url, data).then((res) => res.data).catch(errorHandler);
+    try{
+      const res = await apiClient.post(url,data);
+      return res.data;
+    }catch(error){
+      errorHandler(error);
+      throw error
+    }
+   
   },
   put: async (url: string, data?: any) => {
-    return apiClient.put(url, data).then((res) => res.data).catch(errorHandler);
+    try{
+      const res = await apiClient.put(url, data);
+      return res.data;
+    }catch(error){
+      errorHandler(error);
+      throw error
+    }
+  
   },
   delete: async (url: string) => {
+    try{
+      const res = await apiClient.delete(url);
+      return res.data;
+    }catch(error){
+      errorHandler(error);
+      throw error
+    }
     return apiClient.delete(url).then((res) => res.data).catch(errorHandler);
   },
   setErrorHandler: (handler: (error: any) => void) => {
