@@ -4,4 +4,5 @@ export declare const api: {
     put: (url: string, data?: any) => Promise<any>;
     delete: (url: string) => Promise<any>;
     setErrorHandler: (handler: (error: any) => void) => void;
+    setAuthToken: (token: string, storageType?: string) => void;
 };

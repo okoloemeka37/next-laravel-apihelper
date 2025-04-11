@@ -1,5 +1,5 @@
 import apiClient from "./apiClient";
-
+import { setAuthToken } from "./apiClient"; 
 let errorHandler: (error: any) => void = (error) => {
   console.error("API Error:", error.response?.data || error.message);
 };
@@ -43,9 +43,10 @@ export const api = {
       errorHandler(error);
       throw error
     }
-    return apiClient.delete(url).then((res) => res.data).catch(errorHandler);
+   
   },
   setErrorHandler: (handler: (error: any) => void) => {
     errorHandler = handler;
-  }
+  },
+  setAuthToken,
 };

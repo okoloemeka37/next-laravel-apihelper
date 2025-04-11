@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.api = void 0;
 const apiClient_1 = __importDefault(require("./apiClient"));
+const apiClient_2 = require("./apiClient");
 let errorHandler = (error) => {
     var _a;
     console.error("API Error:", ((_a = error.response) === null || _a === void 0 ? void 0 : _a.data) || error.message);
@@ -58,9 +59,9 @@ exports.api = {
             errorHandler(error);
             throw error;
         }
-        return apiClient_1.default.delete(url).then((res) => res.data).catch(errorHandler);
     }),
     setErrorHandler: (handler) => {
         errorHandler = handler;
-    }
+    },
+    setAuthToken: apiClient_2.setAuthToken,
 };

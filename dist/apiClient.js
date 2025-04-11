@@ -21,41 +21,59 @@ const apiClient = axios_1.default.create({
         "Content-Type": "application/json",
         Accept: "application/json",
     },
-    timeout: 10000
+    timeout: 50000,
 });
 // Variable to store manually set token
 let authToken = null;
-// Function to manually set the token
-const setAuthToken = (token, storageType) => {
+// Function to manually set the token with default storage method as 'local'
+const setAuthToken = (token, storageType = "local") => {
     authToken = token; // Store in variable
     if (storageType === "session") {
-        sessionStorage.setItem("authToken", token); // Store in sessionStorage  
+        sessionStorage.setItem("authToken", token); // Store in sessionStorage
+        console.log("sessionStorage", sessionStorage.getItem("authToken"));
     }
     else if (storageType === "cookie") {
         document.cookie = `authToken=${token}; path=/;`; // Store in cookies
+        console.log("cookie", document.cookie);
     }
-    else if (storageType === "local") {
+    else { // Default to 'local' if no type is specified
         if (typeof window !== "undefined") {
             localStorage.setItem("authToken", token); // Store in localStorage
+            console.log("localStorage", localStorage.getItem("authToken"));
         }
     }
 };
 exports.setAuthToken = setAuthToken;
-//middleware handle response
-apiClient.interceptors.response.use((response) => {
-    console.log("Response Received:", response);
-    return response;
-}, (error) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
-    console.error("API Error:", ((_a = error.response) === null || _a === void 0 ? void 0 : _a.data) || error.message);
-    // retry logic after 500 error(server error)
-    if (error.response && ((_b = error.response) === null || _b === void 0 ? void 0 : _b.status) >= 500) {
-        console.warn("Retrying request...");
-        return apiClient.request(error.config);
+// Middleware for attaching token to request headers
+apiClient.interceptors.request.use((config) => {
+    const token = authToken ||
+        sessionStorage.getItem("authToken") ||
+        localStorage.getItem("authToken") ||
+        getCookie("authToken"); // Retrieve token from cookies as well
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
     }
-    return Promise.reject(error);
+    return config;
+});
+// Helper function to retrieve cookie value
+function getCookie(name) {
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? match[2] : null;
+}
+// Middleware for error handling and retry logic
+apiClient.interceptors.response.use((response) => response, (error) => __awaiter(void 0, void 0, void 0, function* () {
+    const { config, response } = error;
+    if (!config || !response)
+        return handleApiError(error);
+    config.__retryCount = config.__retryCount || 0;
+    const maxRetries = 3;
+    if (response.status >= 500 && config.__retryCount < maxRetries) {
+        config.__retryCount++;
+        return new Promise((resolve) => setTimeout(() => resolve(apiClient(config)), 1000 * config.__retryCount));
+    }
+    return handleApiError(error);
 }));
-// Custom error handling
+// Custom error handling function
 const handleApiError = (error) => {
     if (error.response) {
         const { status } = error.response;
@@ -80,16 +98,4 @@ const handleApiError = (error) => {
     }
     return Promise.reject(error);
 };
-apiClient.interceptors.response.use((response) => response, (error) => __awaiter(void 0, void 0, void 0, function* () {
-    const { config, response } = error;
-    if (!config || !response)
-        return handleApiError(error);
-    config.__retryCount = config.__retryCount || 0;
-    const maxRetries = 3;
-    if (response.status >= 500 && config.__retryCount < maxRetries) {
-        config.__retryCount++;
-        return new Promise((resolve) => setTimeout(() => resolve(apiClient(config)), 1000 * config.__retryCount));
-    }
-    return handleApiError(error);
-}));
 exports.default = apiClient;
