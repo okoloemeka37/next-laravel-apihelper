@@ -23,7 +23,7 @@ yarn add next-laravel-apihelper
 ### 1️⃣ Configure API Base URL
 Ensure you set your **API base URL** in your **.env.local** file:
 ```sh
-NEXT_PUBLIC_API_URL=https://your-laravel-api.com/api
+NEXT_PUBLIC_API_BASE_URL=https://your-laravel-api.com/api
 ```
 OR 
 REACT_APP_API_BASE_URL=https://your-laravel-api.com/api
